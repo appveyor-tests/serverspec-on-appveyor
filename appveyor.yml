@@ -1,0 +1,36 @@
+version: "{build}"
+
+image: Previous Visual Studio 2015
+
+environment:
+  RUBY_VERSION: "22-x64"   # https://www.appveyor.com/docs/installed-software#ruby
+
+branches:
+  only:
+    - master
+    - /^[\d.]+$/
+
+# Uncomment to debug via RDP
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+cache:
+  - vendor/bundle
+
+install:
+  - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+  - bundle config --local path vendor/bundle
+  - bundle install
+
+build: off
+
+before_test:
+  - ruby -v
+  - gem -v
+  - bundle -v
+
+test_script:
+  - bundle exec rspec --color --format documentation spec/*_spec.rb
