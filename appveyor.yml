@@ -1,7 +1,5 @@
 version: "{build}"
 
-image: Previous Visual Studio 2015
-
 environment:
   RUBY_VERSION: "22-x64"   # https://www.appveyor.com/docs/installed-software#ruby
 
