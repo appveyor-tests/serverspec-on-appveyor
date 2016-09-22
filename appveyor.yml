@@ -23,9 +23,11 @@ install:
   - bundle config --local path vendor/bundle
   - bundle install
 
-build: off
-after_build:
+before_build:
  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+build: off
+
 before_test:
   - ruby -v
   - gem -v
